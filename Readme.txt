@@ -94,3 +94,34 @@ Se vogliamo avere la chiave, ma senza valore:
     db.products.insertOne({name: "A book", price: 12.99, details: null})
 
 Anche se lo stile di MongoDB sarebbe quello di non avere details
+
+Tipi di dati
+
+Text. Es: "max". Non ha limiti, se non il fatto che un documento arriva al massimo a 16MB
+Boolean. soliti true o false
+Number. Ha 3 sotto tipi :
+    NumberInt (Int32), NumberLong(Long), Double (64 bit, usato di default dalla shell. se il mio numero è più grande c'è overflow), NumberDecimal (floating point a alta precisione)
+ObjectId. Una stringa con un elemento temporale. Oggetti creati uno dopo l'altro, avranno gli id in sequenza
+ISODate. 2018-09-09
+Timestamp. Usato internamente. Due documenti non hanno lo stesso timestamp
+Embedded Document
+Array 
+
+es:
+    db.companies.insertOne({name: "Fresh Apples Inc.", isStartup: true, employees: 33, funding: 12345678901234567890, details: {ceo: "Mark Super"}, tags: [{title: "super"}, {title: "perfetct"}], fundingDate: new Date(), insertedAt: new Timestamp()})
+
+
+Data Schemas & Data Modelling
+Which Data does my App need or generate? --> User Information, Product, Information, Orders, .... --> Define the Fields you'll need (and how they relate)
+Where do I need my Data --> Welcome Page, Products List Page, Order Page --> Defines your required collections + fields grouping
+Which kind  of Data or Information do I want to display? --> Welcome Page, Products List Page, Order Page --> Defines which queries you'll need
+How often do I fetch my data --> For every page reload --> Defines whether you should optimize for easy fetching (duplicare le collection per aiutare la ricerca)
+How often do I write or change my data? --> Order ==> Often, Product Data ==> Rarely ==> non duplicare le collection
+In pratica i dati vanno immagazzinati così come vanno fatti vedere nella App
+Evitare le join
+
+Relazioni
+Abbiamo la possibilità di salvare la relazione come Embedded Document, oppure come reference
+Embedded Document: con una sola query ho tutti i dati. Ma ho duplicazione, e se cambio qualcosa relativo al documento Embedded, potrei doverli cercare tutti e aggiornarli
+Reference: mi servono più query per ottenere il documento finale, ma non ho ridondanza di dati
+
